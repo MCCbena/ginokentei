@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>機械製図 下線部 99問（寸法記入・ねじ・歯車）</title>
+<style>
+  :root {
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --surface-2: #f8fafc;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --text-muted: #475569;
+    --primary: #1d4ed8;
+    --primary-light: #eff6ff;
+    --primary-hover: #1e40af;
+    --success: #15803d;
+    --success-bg: #f0fdf4;
+    --success-border: #86efac;
+    --danger: #b91c1c;
+    --danger-bg: #fef2f2;
+    --danger-border: #fca5a5;
+    --warn: #b45309;
+    --warn-bg: #fffbeb;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .container { max-width: 1080px; margin: 0 auto; padding: 16px; }
+  header.app-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+    color: #fff;
+    padding: 20px 24px;
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+  .header-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+  .app-title { margin: 0; font-size: 1.35rem; font-weight: 700; letter-spacing: 0.02em; }
+  .app-subtitle { margin: 4px 0 0; font-size: 0.85rem; color: #cbd5e1; }
+  .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text); font-size: 0.875rem; font-weight: 600;
+    cursor: pointer; transition: all 0.15s ease;
+  }
+  .btn:hover:not(:disabled) { background: #f1f5f9; }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+  .btn-ghost-light { background: rgba(255,255,255,0.12); color: #fff; border-color: rgba(255,255,255,0.25); }
+  .btn-ghost-light:hover:not(:disabled) { background: rgba(255,255,255,0.22); }
+  .btn-danger-outline { background: #fff; color: var(--danger); border-color: var(--danger-border); }
+  .btn-danger-outline:hover:not(:disabled) { background: var(--danger-bg); }
+  .btn-sm { padding: 5px 10px; font-size: 0.8rem; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); }
+  .stat-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; }
+  .stat-value { font-size: 1.4rem; font-weight: 700; margin-top: 2px; color: var(--text); }
+  .stat-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow); }
+  .panel-title { font-size: 0.95rem; font-weight: 700; margin: 0 0 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .cat-bars { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+  .cat-bar-item { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+  .cat-bar-item:hover, .cat-bar-item.active { border-color: var(--primary); background: var(--primary-light); }
+  .cat-bar-head { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 600; margin-bottom: 6px; }
+  .progress-track { height: 7px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--primary); border-radius: 999px; transition: width 0.25s ease; }
+  .controls-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
+  .control-group { display: flex; flex-direction: column; gap: 4px; min-width: 140px; flex: 1 1 160px; }
+  .control-group label { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); }
+  select, input[type="text"] { padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.875rem; background: #fff; color: var(--text); width: 100%; }
+  .mode-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .mode-tab { padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-2); font-size: 0.85rem; font-weight: 600; cursor: pointer; color: var(--text-muted); }
+  .mode-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .q-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 14px; box-shadow: var(--shadow); }
+  .q-meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .q-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 0.74rem; font-weight: 600; }
+  .badge-id { background: #e2e8f0; color: #1e293b; }
+  .badge-cat { background: var(--primary-light); color: var(--primary); }
+  .badge-type { background: #f3e8ff; color: #6b21a8; }
+  .badge-ok { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+  .badge-ng { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); }
+  .bookmark-btn { border: 1px solid var(--border); background: #fff; border-radius: 8px; padding: 4px 10px; font-size: 0.85rem; cursor: pointer; color: var(--text-muted); }
+  .bookmark-btn.active { background: var(--warn-bg); color: var(--warn); border-color: #fcd34d; font-weight: 700; }
+  .q-text { font-size: 1.02rem; font-weight: 600; margin: 0 0 14px; color: var(--text); }
+  .options-list { display: flex; flex-direction: column; gap: 8px; }
+  .opt-btn { display: flex; align-items: flex-start; gap: 10px; width: 100%; text-align: left; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 9px; background: #fff; color: var(--text); font-size: 0.92rem; cursor: pointer; transition: all 0.12s ease; }
+  .opt-btn:hover:not(:disabled) { border-color: var(--primary); background: var(--primary-light); }
+  .opt-btn.selected { border-color: var(--primary); background: var(--primary-light); font-weight: 600; }
+  .opt-btn.correct { border-color: var(--success); background: var(--success-bg); color: #14532d; font-weight: 600; }
+  .opt-btn.wrong { border-color: var(--danger); background: var(--danger-bg); color: #7f1d1d; }
+  .opt-key { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; border-radius: 6px; background: #f1f5f9; color: #334155; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
+  .opt-btn.correct .opt-key { background: var(--success); color: #fff; }
+  .opt-btn.wrong .opt-key { background: var(--danger); color: #fff; }
+  .opt-btn.selected .opt-key { background: var(--primary); color: #fff; }
+  .multi-submit-row { margin-top: 10px; display: flex; gap: 10px; align-items: center; }
+  .explanation-box { margin-top: 14px; padding: 12px 14px; border-radius: 9px; background: var(--surface-2); border-left: 4px solid var(--primary); font-size: 0.88rem; }
+  .explanation-box.ok { border-left-color: var(--success); background: #f0fdf4; }
+  .explanation-box.ng { border-left-color: var(--danger); background: #fef2f2; }
+  .exp-title { font-weight: 700; margin-bottom: 4px; }
+  .nav-footer { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .pagination { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; margin: 16px 0; }
+  .mock-setup { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
+  .modal-backdrop.open { display: flex; }
+  .modal-box { background: #fff; border-radius: var(--radius); padding: 20px; max-width: 420px; width: 100%; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15); }
+  .modal-box h3 { margin: 0 0 8px; font-size: 1.05rem; }
+  .modal-box p { margin: 0 0 16px; font-size: 0.9rem; color: var(--text-muted); }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
+  .hidden { display: none !important; }
+  .empty-state { text-align: center; padding: 40px 16px; color: var(--text-muted); background: var(--surface); border-radius: var(--radius); border: 1px dashed var(--border); }
+  @media (max-width: 640px) { .container { padding: 10px; } .q-card { padding: 14px; } .app-title { font-size: 1.15rem; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="app-header">
+    <div class="header-top">
+      <div>
+        <h1 class="app-title">機械製図 下線部 99問</h1>
+        <p class="app-subtitle">JIS B 0001 機械製図法／スキャン13頁で赤・黄の下線を引いた行だけを出題根拠に</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-ghost-light btn-sm" id="toggle-stats-btn" type="button">分野別進捗を表示/非表示</button>
+        <button class="btn btn-ghost-light btn-sm" id="open-reset-btn" type="button">学習履歴リセット</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="stats-grid" aria-label="全体サマリー">
+    <div class="stat-card"><div class="stat-label">総問題数</div><div class="stat-value" id="stat-total">99</div><div class="stat-sub" id="stat-filtered">表示中: 99問</div></div>
+    <div class="stat-card"><div class="stat-label">解答済み</div><div class="stat-value" id="stat-answered">0</div><div class="stat-sub" id="stat-progress">進捗率: 0%</div></div>
+    <div class="stat-card"><div class="stat-label">正答数 / 正答率</div><div class="stat-value" id="stat-correct">0</div><div class="stat-sub" id="stat-accuracy">正答率: 0%</div></div>
+    <div class="stat-card"><div class="stat-label">ブックマーク</div><div class="stat-value" id="stat-bookmarks">0</div><div class="stat-sub">要復習マーク</div></div>
+  </section>
+
+  <section class="panel" id="cat-stats-panel">
+    <div class="panel-title"><span>分野別出題分布・進捗（クリックで絞り込み）</span><button class="btn btn-sm" id="clear-cat-btn" type="button">全分野を表示</button></div>
+    <div class="cat-bars" id="cat-bars"></div>
+  </section>
+
+  <section class="panel">
+    <div class="mode-tabs" role="tablist">
+      <button class="mode-tab active" data-mode="single" type="button">1問ずつ演習</button>
+      <button class="mode-tab" data-mode="list" type="button">一覧リスト表示</button>
+      <button class="mode-tab" data-mode="mock" type="button">ランダム模試</button>
+    </div>
+
+    <div class="controls-bar" id="filter-controls">
+      <div class="control-group">
+        <label for="filter-cat">分野</label>
+        <select id="filter-cat">
+          <option value="all">すべての分野 (99問)</option>
+          <option value="1">① 寸法記入の一般原則 (14問)</option>
+          <option value="2">② 寸法補助線・寸法線 (10問)</option>
+          <option value="3">③ 寸法数値の記入 (12問)</option>
+          <option value="4">④ 端末記号・寸法記号 (4問)</option>
+          <option value="5">⑤ 直径・半径・球・正方形 (12問)</option>
+          <option value="6">⑥ 穴・座ぐり・キー溝 (12問)</option>
+          <option value="7">⑦ 弦・円弧・面取り・曲線 (11問)</option>
+          <option value="8">⑧ ねじの図示 (12問)</option>
+          <option value="9">⑨ 歯車の図示 (8問)</option>
+          <option value="10">⑩ 溶接・その他 (4問)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="filter-type">出題形式</label>
+        <select id="filter-type">
+          <option value="all">すべての形式</option>
+          <option value="s">単一選択</option>
+          <option value="ox">○×問題</option>
+          <option value="m">複数選択</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="filter-status">解答状態</label>
+        <select id="filter-status">
+          <option value="all">すべて</option>
+          <option value="unanswered">未解答のみ</option>
+          <option value="wrong">不正解のみ</option>
+          <option value="correct">正解のみ</option>
+          <option value="bookmark">ブックマークのみ</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="filter-search">キーワード検索</label>
+        <input type="text" id="filter-search" placeholder="例: ツェナー, オペアンプ, dB...">
+      </div>
+    </div>
+
+    <div class="mock-setup hidden" id="mock-controls">
+      <div class="control-group" style="max-width:180px;">
+        <label for="mock-count">出題数</label>
+        <select id="mock-count">
+          <option value="10">10問（ミニテスト）</option>
+          <option value="30" selected>30問（標準テスト）</option>
+          <option value="50">50問（実力テスト）</option>
+          <option value="100">100問（総仕上げ）</option>
+        </select>
+      </div>
+      <div class="control-group" style="max-width:240px;">
+        <label for="mock-cat">出題範囲</label>
+        <select id="mock-cat">
+          <option value="all">全分野から分布比率で出題</option>
+          <option value="1">① 寸法記入の一般原則</option>
+          <option value="2">② 寸法補助線・寸法線</option>
+          <option value="3">③ 寸法数値の記入</option>
+          <option value="4">④ 端末記号・寸法記号</option>
+          <option value="5">⑤ 直径・半径・球・正方形</option>
+          <option value="6">⑥ 穴・座ぐり・キー溝</option>
+          <option value="7">⑦ 弦・円弧・面取り・曲線</option>
+          <option value="8">⑧ ねじの図示</option>
+          <option value="9">⑨ 歯車の図示</option>
+          <option value="10">⑩ 溶接・その他</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" id="start-mock-btn" type="button">模試を開始する</button>
+      <span id="mock-status-text" style="font-size:0.85rem;color:var(--text-muted);"></span>
+    </div>
+  </section>
+
+  <main id="quiz-area"></main>
+  <div id="pagination-area" class="pagination"></div>
+</div>
+
+<div class="modal-backdrop" id="reset-modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <h3>学習履歴をリセットしますか？</h3>
+    <p>すべての解答履歴とブックマークが消去されます。この操作は取り消せません。</p>
+    <div class="modal-actions">
+      <button class="btn" id="cancel-reset-btn" type="button">キャンセル</button>
+      <button class="btn btn-danger-outline" id="confirm-reset-btn" type="button">リセットする</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CATEGORIES = {
+  1: { name: "① 寸法記入の一般原則", target: 14 },
+  2: { name: "② 寸法補助線・寸法線", target: 10 },
+  3: { name: "③ 寸法数値の記入", target: 12 },
+  4: { name: "④ 端末記号・寸法記号", target: 4 },
+  5: { name: "⑤ 直径・半径・球・正方形", target: 12 },
+  6: { name: "⑥ 穴・座ぐり・キー溝", target: 12 },
+  7: { name: "⑦ 弦・円弧・面取り・曲線", target: 11 },
+  8: { name: "⑧ ねじの図示", target: 12 },
+  9: { name: "⑨ 歯車の図示", target: 8 },
+  10: { name: "⑩ 溶接・その他", target: 4 }
+};
+
+const RAW_QUESTIONS = [
+  [1, "ox", "図面に示す寸法は、対象物の大きさ・姿勢および位置を最も明らかに表わすのに、必要で十分なものを記入する。", null, 0, "一般原則②。寸法は必要にして十分、過不足なく記入します。"],
+  [1, "ox", "対象物の機能・製作・組立などは考えず、外形の寸法だけを図面に記入する。", null, 1, "対象物の機能・製作・組立などを考えて、必要と思われる寸法を明瞭に記入します。"],
+  [1, "ox", "同じ対象物の寸法は、読み間違いを防ぐため2箇所に重複して記入する。", null, 1, "寸法の重複記入は避けます。"],
+  [1, "s", "参考寸法については、寸法数値をどのように示すか。", ["寸法数値を斜線で消す", "寸法数値に（ ）をつけて示す", "寸法数値を赤字で書く", "寸法数値に下線をつけて示す"], 2, "参考寸法は寸法数値に（ ）を付けて示します。"],
+  [1, "ox", "寸法は、計算して求めることを前提に記入する。", null, 1, "寸法は、なるべく計算して求める必要のないように記入します。"],
+  [1, "s", "対象物の寸法の基準とする形状がある場合、寸法はどこから記入するか。", ["中心線から必ず離す", "任意の辺から", "図枠から記入", "その基準とする形状から記入"], 2, "基準とする形状がある場は、その基準形状から記入します。"],
+  [1, "ox", "参考寸法は、角括弧［　］で囲んで示す。", null, 1, "参考寸法は（　）で示します。"],
+  [1, "s", "図面の寸法は、なるべくどこに記入するか。", ["斜視図に記入", "どの図でもよい", "主投影図に集中して記入", "断面図に集中して記入"], 1, "「なるべく主投影図に集中して記入する」が下線部です。"],
+  [1, "ox", "同じ対象物に対して、関連する寸法はなるべく1箇所にまとめて記入する。", null, 0, "関連する寸法は1箇所にまとめるのが原則です。"],
+  [1, "s", "機械加工を施す部分や金網、しま鋼板などの材料の表示方法は、何に規定されているか。", ["JIS B 0005", "JIS B 0001", "JIS C 0003", "ISO 128"], 3, "加工部・材料の表示方法、加工前/加工後の図示法はJIS B 0001に規定されています。"],
+  [1, "s", "90°以内の円弧でも必要があれば記入できる寸法はどれか。", ["角度の寸法のみ", "厚さの寸法", "半径のみ", "直径の寸法"], 0, "90°以内でも必要があれば直径の寸法を記入します。"],
+  [1, "ox", "寸法記入のとき、対象物の機能・製作・組立などを考えて適切に記入する。", null, 0, "これは一般原則の冒頭に下線が引かれている文章です。"],
+  [1, "s", "溶接部材の重なりや溶接の種類・大きさを表わす場合に用いるのは何か。", ["寸法記号", "表面の荒さ記号", "溶接記号", "照査記号"], 3, "溶接構造部材の重なり・種類・大きさは溶接記号で表わします。"],
+  [1, "s", "図面に見出しなどの寸法を記入する場合は、何によって記入するか。", ["中心線からの距離のみで", "適宜記入してよい", "必ず規格値のみで", "必ず計算して"], 1, "対象物に寸法記入する場合は機能・製作・組立を考え、必要と思われる範囲で適宜記入します。"],
+  [2, "ox", "同一図面で関連する複数の寸法は、図面の四方に分散して記入する。", null, 1, "関連する寸法はなるべく1箇所に集めて記入します。"],
+  [2, "s", "2つの面の交わる位置を示す図示法は、どの図で示されているか。", ["図8-94", "図8-55(a)", "図8-1", "図8-6"], 3, "交点からの寸法補助線引き出しは図8-55(a)です。"],
+  [2, "ox", "2つの面の交わる位置を示すには、丸みまたは面取りを施す以前の形状を表わし、その交点から寸法補助線を引き出す。", null, 0, "面取り/丸みの前の交点を想定し、その交点から補助線を引き出します。"],
+  [2, "s", "寸法線は、通常どのように記入するか。", ["補助線なしで角度だけ書く", "寸法補助線を用いて寸法線を記入し、この上に寸法数値を示す", "寸法線を対象物に直接接触させる", "中心線の上のみ記入"], 0, "「寸法は通常は寸法補助線を用いて寸法線を記入し、この上に寸法数値を表示する」が下線部です。"],
+  [2, "s", "寸法数値を示す位置は、寸法線のどの位置か。", ["対象物に記入", "図枠に記入", "寸法線の下に記入", "寸法線の上に記入"], 0, "寸法線の上に寸法数値を示します。"],
+  [2, "ox", "2つの面の交わる位置を示すには、丸みを付けた後の曲面上の接点から寸法補助線を引き出せばよい。", null, 1, "丸みまたは面取りを施す以前の形状（実在しない交点）を表わし、その交点から寸法補助線を引き出します（図8-55）。"],
+  [2, "ox", "面取り以前の形状の交点を用いれば、実在の交点でなくても寸法補助線を引き出せる。", null, 0, "交点が実在しなくても想定交点から引き出します。"],
+  [2, "ox", "寸法補助線は、図形の輪郭線から離して引く。", null, 1, "寸法補助線は、対象の輪郭線（または想定した交点）から延ばします。"],
+  [2, "s", "2つの面の交わる位置を示すとき、表わす形状の種類はどれか。", ["丸みまたは面取り", "ねじ", "テーパー", "ギア"], 3, "丸みまたは面取りを施す前の形状を使います。"],
+  [2, "s", "関連する寸法を記入する位置について、原則はどれか。", ["別々の図に分散する", "必ず中心線から離す", "必ず対称に両側へ", "1箇所にまとめる"], 1, "なるべく1箇所にまとめることが原則です。"],
+  [3, "s", "寸法数値は、鉛直方向の寸法線に対して、図面のどの辺から記入するか。", ["右辺から", "左辺から", "下辺から", "上辺から"], 2, "鉛直方向の寸法線に対しては図面の左辺から記入します。"],
+  [3, "ox", "重複記入は避けるなければならない。", null, 0, "寸法は重複記入を避けます。"],
+  [3, "ox", "角度を表す寸法数値の単位は、特に明示しない限りラジアンを用いる。", null, 1, "角度を表す寸法数値の単位は度（°）です。"],
+  [3, "s", "寸法数値は、水平方向の寸法線に対して、図面のどの辺から記入するか。", ["上辺から", "左辺から", "右辺から", "下辺から"], 2, "水平方向の寸法線に対しては図面の下辺から記入します。"],
+  [3, "ox", "同じ種類の寸法数値でも、文字の大きさは自由に決めてよい。", null, 1, "同じ種類の寸法数値の文字の大きさは、図面内でそろえます。"],
+  [3, "ox", "寸法数値の単位は、特に明示しない限り cm（センチメートル）を用いる。", null, 1, "機械製図の寸法数値の単位は、特に明示しない限り mm です。"],
+  [3, "s", "寸法数値は、寸法線に対してどの向きに記入するのが基本か。", ["必ず斜めに", "中心線と平行に", "必ず垂直に", "読みやすい方向に水平に"], 0, "寸法数値は読みやすい方向に水平に記入します。"],
+  [3, "s", "寸法数値の記入で、参考寸法を示す書き方はどれか。", ["破線", "（ ）の外に下線", "斜線", "（ ）"], 1, "参考寸法は（ ）で囲みます。"],
+  [3, "ox", "必要かつ十分な寸法を記入しなければならない。", null, 0, "必要で十分な寸法を記入します。"],
+  [3, "ox", "必要とされる範囲の寸法を、機能・製作・組立を考慮して記入しなければならない。", null, 0, "必要とされる範囲の寸法を、機能・製作・組立などを考えて記入します。"],
+  [3, "ox", "寸法数値には、単位 mm を付記する。", null, 1, "寸法数値は単位を付記せず数値だけで記入します（単位は既定で mm）。参考寸法は（　）で示します。"],
+  [3, "s", "基準とする形状がある場合、寸法はそこから記入する。この形状を何というか。", ["基準面のみ", "基準形状", "輪郭線のみ", "中心線のみ"], 2, "基準形状・基準面からの寸法が原則です。"],
+  [4, "s", "寸法記号 R は何を表すか。", ["半径", "直径", "角度", "球"], 1, "Rは半径の寸法記号です。"],
+  [4, "ox", "深さを示す寸法記号として ▼（または深さの記号）を用いる。", null, 0, "穴の深さなどに深さ記号を用います。"],
+  [4, "ox", "端末記号は、寸法線の中央に記す。", null, 1, "端末記号は、寸法線と寸法補助線との交点に記します。"],
+  [4, "s", "寸法線の両端に記す記号を何というか。", ["照査記号", "寸法記号", "溶接記号", "端末記号"], 0, "寸法線両端の記号は端末記号です。"],
+  [5, "s", "球の直径または半径の寸法は、何を併記して表すか。", ["Sφ または SR", "□", "t", "φ または R"], 2, "球の直径はSφ、球の半径はSRを併記します。"],
+  [5, "s", "直径または半径の寸法は、何をその寸法線に併記するか。", ["記号 □", "記号 t", "記号 Sφ", "記号 φ または R"], 1, "直径はφ、半径はRを寸法線に併記します。"],
+  [5, "s", "円弧の半径を示す寸法記号はどれか。", ["Sφ", "φ", "R", "t"], 0, "円弧の半径はRです。"],
+  [5, "ox", "90°を超える円弧は、直径で表す。", null, 0, "90°を超えると直径で表します。"],
+  [5, "ox", "角度を表す寸法は、寸法数値に°を併記しない。", null, 1, "角度の寸法数値には単位として°を併記します。"],
+  [5, "s", "正方形で構成される部分の寸法は、何と併記して表わすか。", ["記号 R", "記号 □", "記号 t", "記号 Sφ"], 3, "正方形の寸法は □ と併記します。"],
+  [5, "ox", "正方形で構成される部分の寸法は、□ の代わりに Sφ を用いて表す。", null, 1, "正方形の部分には正方形の記号 □ を付けます。Sφ は球の直径に用います。"],
+  [5, "s", "曲率半径の記号は何ですか。", ["φ", "R", "C", "t"], 2, "曲率半径はRで表します。"],
+  [5, "ox", "角度の範囲が90°以内の円弧は、半径で表すことができる。", null, 0, "90°以内は半径表記ができます。"],
+  [5, "s", "正方形で構成される部分の寸法に併記する記号はどれか。", ["R", "t", "Sφ", "□"], 2, "正方形は □ です。"],
+  [5, "s", "球の半径を示す寸法記号はどれか。", ["Sφ", "SR", "φ", "R"], 0, "球の半径はSRです。"],
+  [5, "s", "厚さを表す寸法記号はどれか。", ["h", "d", "L", "t"], 0, "厚さは t です。"],
+  [6, "s", "座ぐりは、穴の直径寸法の次に、どの順で記入するか。", ["穴の直径寸法・座ぐりの直径寸法・座ぐり深さ", "半径・直径・角度", "深さ・直径・半径", "角度・深さ・直径"], 3, "「座ぐりは、穴の直径寸法・座ぐりの直径寸法・座ぐり深さの順に表記する」が下線部です。"],
+  [6, "s", "きり穴、打抜き穴、鋳抜き穴など、穴の加工方法による区別を示す必要がある場合は、まず何を示すか。", ["加工方法の区別", "穴の深さの記号", "公差記号", "工具の呼び寸法または基準寸法"], 2, "工具の呼び寸法または基準寸法を示し、その後に加工方法の区別を指示します（図8-83）。"],
+  [6, "s", "穴の加工方法による区別を示す必要がある場合、工具の呼び寸法または基準寸法を示した後に何を指示するか。", ["半径", "球の記号", "加工方法の区別", "角度"], 3, "工具の呼び寸法または基準寸法を示した後に、加工方法の区別を指示します。"],
+  [6, "s", "座ぐりの直径寸法・座ぐり深さを表記する順番は、穴の直径寸法に対して前か後ろか。", ["後ろ（穴の直径寸法の後）", "前", "どちらでもよい", "別の図に必ず分離"], 1, "穴の直径寸法 → 座ぐりの直径寸法 → 座ぐり深さ の順です。"],
+  [6, "s", "軸のキー溝の表わし方は、どの図に示されているか。", ["図8-94", "図8-87", "図8-55", "図8-1"], 3, "キー溝の寸法図は図8-87です。"],
+  [6, "s", "キリ穴、座ぐり穴などの穴の深さを示す寸法は、穴の直径寸法の次に何を入れて表すか。", ["正方形の記号", "深さの記号と数値", "角度の記号", "半径の記号"], 0, "「示す数字の次に ▼ を挟んで深さの寸法を記入する」が下線部です。"],
+  [6, "s", "キー溝の深さを表わす寸法は、キー溝と反対側の軸径面からどこまでか。", ["軸の端面まで", "中心線まで", "端部まで", "キー溝の底まで"], 3, "キー溝と反対側の軸径面からキー溝の底までで表わします。"],
+  [6, "s", "穴のキー溝の寸法は、キー溝の幅と何で表すか。", ["半径", "長さ", "角度", "深さ"], 1, "穴のキー溝は幅と深さで表します。"],
+  [6, "s", "穴の深さの図示は、穴の直径寸法に何を挟んで示すか。", ["φ", "R", "▼", "t"], 1, "穴の直径寸法に ▼ を挟みます。"],
+  [6, "ox", "黒皮を取る程度の座ぐりには、深さを示す寸法を付ける。", null, 1, "黒皮を取る程度の座ぐりは、深さを示さなくてもよいとされています。"],
+  [6, "s", "貫通穴の場合は、直径寸法とともに何を表わすか。", ["半径の寸法", "角度の寸法", "深さを表わさない", "深さを必ず書く"], 0, "貫通穴は深さを表記しません。"],
+  [6, "s", "軸のキー溝の寸法は、キー溝の幅、深さ、長さ、位置および何を表わす寸法で示すか。", ["角度", "厚さ", "端部を表わす寸法", "半径"], 2, "軸のキー溝は幅・深さ・長さ・位置および端部を寸法で表わします。"],
+  [7, "s", "円弧で構成する曲線の寸法は、何によって表すか。", ["直径のみ", "円弧の半径とその中心、または円弧の接線の位置", "座標のみ", "角度のみ"], 0, "曲線は円弧の半径と中心、または接線の位置で表します。"],
+  [7, "s", "角部の面取りを表す寸法は、何を併記して表すか。", ["面取りの寸法数値または記号を寸法数値の前に", "角度のみ", "半径のみ", "深さのみ"], 2, "角部・面取りは寸法数値に角度や記号Cを併記します。"],
+  [7, "s", "円弧の長さを表す記号を、寸法数値のどこに付けるか。", ["後", "前", "横", "下"], 3, "寸法数値の前に付けます。"],
+  [7, "s", "円弧を構成する角度が大きいとき、円弧の寸法を記入する方法はどれか。", ["中心から離して平行寸法線のみ", "補助線なしで文字のみ", "必ず別図に分離", "円弧の中心から放射状に引いた寸法補助線に寸法線を当ててよい"], 0, "角度が大きい円弧は、放射状の補助線に寸法線を当てて記入できます。"],
+  [7, "s", "45°の面取りを表す書き方はどれか。", ["面取りの寸法数値 C", "45 を2回書く", "t のみ", "R のみ"], 3, "45°の面取りは C で表すのが下線部です（例: 2-C）。"],
+  [7, "ox", "円弧の長さを表すときは、その弦を寸法線として表す。", null, 1, "円弧の長さは、円弧と同心の円弧を寸法線として表します。"],
+  [7, "ox", "円弧の長さを表すとき、寸法数値の前に円弧の長さを表す記号を付ける。", null, 0, "円弧の長さを表す記号を、寸法数値の前に付けます。"],
+  [7, "ox", "45°面取りは、寸法数値の前に記号 C を、寸法数値と同じ大きさで記入して表わす。", null, 0, "45°面取りの場合は、面取りの寸法数値×45°、または記号Cを寸法数値の前に寸法数値と同じ大きさで記入して表わします。"],
+  [7, "ox", "円弧で構成されない曲線の寸法は、その弦の長さで表す。", null, 1, "円弧で構成されない曲線は、曲線上の任意の点の座標寸法で表します。"],
+  [7, "s", "弦の寸法は、弦に直角に何を引いて表わすか。", ["細い一点鎖線のみ", "寸法補助線のみ", "中心線のみ", "寸法補助線を引き、弦に平行な寸法線を用いる"], 0, "弦に直角に補助線を引いて表します。"],
+  [7, "s", "弦の寸法線は、弦に対してどの方向に引くか。", ["直角", "接線方向", "斜め45°", "平行"], 3, "寸法補助線は弦に直角、寸法線は弦に平行に引きます。"],
+  [8, "ox", "不完全ねじ部は、断面に表わさない。", null, 0, "ねじ欠け部（不完全ねじ部）は、断面に表わしません。"],
+  [8, "ox", "ねじの図示では、断面のハッチングを省略できる。", null, 0, "ねじの断面では、ハッチングを省略できます。"],
+  [8, "s", "組立にねじ図示を適用するときは、おねじ部品を隠した状態で示し、めねじ部品で覆わない範囲までおねじ部品を描く。この範囲を何で決めるか。", ["ねじの呼び", "めねじ部品を挿入する深さ", "軸径", "おねじの長さ"], 1, "おねじのねじ込み深さまで描くため、おねじの長さが決める範囲です。"],
+  [8, "s", "ねじの図示において、歯先円を表す線はどれか。", ["細い一点鎖線", "細い実線", "太い実線", "太い一点鎖線"], 1, "歯先円は太い実線です。"],
+  [8, "s", "ねじを端面から見た図で、谷の底はどのように表すか。", ["太い実線の完全な円", "円周の4分の1にほぼ等しい円", "細い一点鎖線の円", "細い実線で描いた円周の4分の3にほぼ等しい円の一部"], 2, "ねじの谷底は細い実線で描いた円周の3/4にほぼ等しい円の一部で表し、できれば右上方に4分円を残すのがよい、が下線部です。"],
+  [8, "ox", "ねじを傾斜した細い実線で表す図示が用いられる場合がある。", null, 0, "「傾斜した細い実線で表わす」が下線部です。"],
+  [8, "s", "おねじとめねじの組立図では、めねじの歯底線は何の線で描くか。", ["太い実線", "細い実線", "破線", "一点鎖線"], 0, "めねじ歯底は太い実線です。"],
+  [8, "ox", "ねじの図示は、ねじ部品の図示にだけ適用する。", null, 1, "ねじの図示は部品だけでなく、おねじとめねじの組み合わせ（組立）にも適用します。"],
+  [8, "ox", "おねじとめねじの組み合わせを断面で表すとき、おねじの歯先を太い実線、めねじの歯底を細い実線で表す。", null, 1, "逆です。めねじを先（歯底を太い実線）、おねじを後（歯先を細い実線）に描きます。"],
+  [8, "s", "ねじの山谷を直角ではなく表現する場合は、どのような線で表わすか。", ["太い実線", "一点鎖線", "傾斜した細い実線", "二点鎖線"], 2, "「傾斜した細い実線で表わす」が下線部です。"],
+  [8, "ox", "ねじは、原則として歯先円を細い実線、歯底円を太い実線で表す。", null, 1, "原則は歯先円を太い実線、歯底円を細い実線です。"],
+  [8, "s", "おねじとめねじを嵌合した状態で描くとき、どちらを隠れても見えない状態（太い実線）として先に描くか。", ["省略", "おねじ", "どちらも同じ", "めねじ"], 1, "めねじを先・おねじを後で描くため、めねじ側を太実線で見せます。"],
+  [9, "s", "歯車の軸に直角な方向から見た図で、基準円を表す線はどれか。", ["細い実線", "太い実線", "破線", "細い一点鎖線"], 2, "基準円は細い一点鎖線です。"],
+  [9, "ox", "ウォームホイールをその軸方向から見た図（側面図）では、歯底の線は原則省略する。", null, 0, "ウォームホイールの軸方向図では歯底の線は原則省略します。"],
+  [9, "ox", "歯車は、歯先円・基準円・歯底円をすべて太い実線で表す。", null, 1, "歯先円は太い実線、基準円は細い一点鎖線、歯底円は細い実線で表します。"],
+  [9, "ox", "歯車の図には、工作物（歯車）を製作するのに必要な寸法を記入する。", null, 0, "歯車の図示では、工作物（歯車）を製作するのに必要な寸法を記入すると下線が引かれています。"],
+  [9, "s", "歯車の軸に直角な方向から見た図で、歯底円を表す線はどれか。", ["細い実線", "太い実線", "二点鎖線", "細い一点鎖線"], 3, "歯底円は細い実線です。"],
+  [9, "s", "歯車の軸に直角な方向から見た図で、歯先円を表す線はどれか。", ["細い実線", "細い一点鎖線", "太い実線", "二点鎖線"], 3, "歯先円は太い実線です。"],
+  [9, "ox", "軸に直角な方向から見た図（正面図）では、歯底の線は細い実線で表す。", null, 1, "正面図では、歯底の線は太い実線で表します。"],
+  [9, "s", "ウォームホイールを軸方向から見た図で、歯底の線をどう扱うか。", ["二点鎖線で描く", "原則省略する", "必ず細一点鎖線で描く", "必ず太実線で描く"], 1, "歯底の線は原則省略です。"],
+  [10, "ox", "図面中に特定の範囲を示す必要があるときは、その範囲を太い一点鎖線で囲み必要事項を指示できる。", null, 0, "太一点鎖線で囲んで示します。"],
+  [10, "ox", "溶接構造部材の重なり関係および溶接の種類と大きさは、寸法のみで表す。", null, 1, "溶接記号を用いて、重なり関係・溶接の種類と大きさを表わします。"],
+  [10, "s", "溶接構造物で、組立図のように溶接寸法を必要としない場合は、溶接部位を何で指示できるか。", ["塗りつぶして指示", "寸法のみ", "破線で指示", "二点鎖線で指示"], 1, "溶接部位を塗りつぶして指示できます。"],
+  [10, "s", "加工前の形状および加工後の形状を同時に表す図示法は、何に規定されているか。", ["ISO 2768", "JIS C 0003", "JIS B 0001", "JIS B 0005"], 0, "加工前・加工後の図示法はJIS B 0001に規定されています。"],
+];
+
+// ===== 開くたびに肢順・出題順・○×の並びを組み替える（推測防止・暗号乱数） =====
+const RAW_SHUFFLED = (() => {
+  let rnd;
+  try {
+    const buf = new Uint32Array(1);
+    crypto.getRandomValues(buf);
+    rnd = () => { crypto.getRandomValues(buf); return buf[0] / 4294967296; };
+  } catch (e) {
+    let s = (Date.now() ^ Math.floor(Math.random() * 4294967296)) >>> 0;
+    rnd = () => { s ^= s << 13; s >>>= 0; s ^= s >>> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; };
+  }
+  const shuf = (a) => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; };
+  return shuf(RAW_QUESTIONS.map((r) => {
+    if (r[1] !== "s") return r.slice();
+    const opts = r[3], correct = opts[r[4]];
+    const rest = shuf(opts.filter((o, j) => j !== r[4]));
+    const na = Math.floor(rnd() * opts.length);
+    const no = rest.slice(); no.splice(na, 0, correct);
+    return [r[0], r[1], r[2], no, na, r[5]];
+  }));
+})();
+
+const QUESTIONS = RAW_SHUFFLED.map((r, i) => ({
+  id: i + 1,
+  cat: r[0],
+  type: r[1],
+  q: r[2],
+  opts: r[3] || ["○", "×"],
+  ans: r[4],
+  exp: r[5]
+}));
+
+(function () {
+  const a = new Uint32Array(1);
+  try { crypto.getRandomValues(a); } catch (e) { a[0] = Date.now() >>> 0; }
+  let s = a[0] >>> 0 || 1;
+  const rnd = () => { s ^= s << 13; s >>>= 0; s ^= s >>> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; };
+  for (let i = QUESTIONS.length - 1; i > 0; i--) {
+    const j = Math.floor(rnd() * (i + 1));
+    const t = QUESTIONS[i]; QUESTIONS[i] = QUESTIONS[j]; QUESTIONS[j] = t;
+  }
+})();
+
+const BY_ID = {};
+QUESTIONS.forEach((q) => { BY_ID[q.id] = q; });
+
+const TYPE_LABELS = { s: "単一選択", ox: "○×問題", m: "複数選択" };
+const KEYS = ["A", "B", "C", "D", "E", "F"];
+const STORAGE_KEY = "kikai_seizu_underline_v3";
+
+let state = {
+  mode: "single",
+  filterCat: "all",
+  filterType: "all",
+  filterStatus: "all",
+  search: "",
+  currentIdx: 0,
+  listPage: 1,
+  pageSize: 25,
+  answers: {},      // { [id]: { sel: number|number[], ok: boolean } }
+  bookmarks: {},    // { [id]: true }
+  multiDraft: {},   // { [id]: number[] }
+  mockIds: [],
+  mockIdx: 0,
+  mockAnswers: {},  // { [id]: { sel: number|number[], ok: boolean } }
+  mockFinished: false
+};
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === "object") {
+        state.answers = parsed.answers || {};
+        state.bookmarks = parsed.bookmarks || {};
+      }
+    }
+  } catch (e) {}
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      answers: state.answers,
+      bookmarks: state.bookmarks
+    }));
+  } catch (e) {}
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function isCorrectSelection(q, sel) {
+  if (q.type === "m") {
+    if (!Array.isArray(sel) || sel.length === 0) return false;
+    const a = [...q.ans].sort((x, y) => x - y);
+    const b = [...sel].sort((x, y) => x - y);
+    return a.length === b.length && a.every((v, i) => v === b[i]);
+  }
+  return sel === q.ans;
+}
+
+function getFilteredQuestions() {
+  const kw = state.search.trim().toLowerCase();
+  return QUESTIONS.filter(q => {
+    if (state.filterCat !== "all" && String(q.cat) !== state.filterCat) return false;
+    if (state.filterType !== "all" && q.type !== state.filterType) return false;
+    const ansRec = state.answers[q.id];
+    if (state.filterStatus === "unanswered" && ansRec) return false;
+    if (state.filterStatus === "correct" && (!ansRec || !ansRec.ok)) return false;
+    if (state.filterStatus === "wrong" && (!ansRec || ansRec.ok)) return false;
+    if (state.filterStatus === "bookmark" && !state.bookmarks[q.id]) return false;
+    if (kw) {
+      const hay = (q.q + " " + q.opts.join(" ") + " " + q.exp).toLowerCase();
+      if (!hay.includes(kw)) return false;
+    }
+    return true;
+  });
+}
+
+function updateSummaryStats(filteredCount) {
+  const total = QUESTIONS.length;
+  const ansList = Object.values(state.answers);
+  const answered = ansList.length;
+  const correct = ansList.filter(a => a.ok).length;
+  const bmCount = Object.keys(state.bookmarks).length;
+
+  document.getElementById("stat-total").textContent = total;
+  document.getElementById("stat-filtered").textContent = "表示中: " + filteredCount + "問";
+  document.getElementById("stat-answered").textContent = answered;
+  document.getElementById("stat-progress").textContent = "進捗率: " + (total ? Math.round((answered / total) * 100) : 0) + "%";
+  document.getElementById("stat-correct").textContent = correct;
+  document.getElementById("stat-accuracy").textContent = "正答率: " + (answered ? Math.round((correct / answered) * 100) : 0) + "%";
+  document.getElementById("stat-bookmarks").textContent = bmCount;
+
+  const barsEl = document.getElementById("cat-bars");
+  barsEl.innerHTML = Object.keys(CATEGORIES).map(catKey => {
+    const cNum = Number(catKey);
+    const qs = QUESTIONS.filter(q => q.cat === cNum);
+    const done = qs.filter(q => state.answers[q.id]).length;
+    const ok = qs.filter(q => state.answers[q.id] && state.answers[q.id].ok).length;
+    const pct = qs.length ? Math.round((done / qs.length) * 100) : 0;
+    const activeCls = state.filterCat === String(cNum) ? "active" : "";
+    return `
+      <div class="cat-bar-item ${activeCls}" data-cat="${cNum}">
+        <div class="cat-bar-head">
+          <span>${escapeHtml(CATEGORIES[cNum].name)}</span>
+          <span>${done}/${qs.length} (正答${ok})</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderQuestionCard(q, ansSource, isMock) {
+  const ansRec = ansSource[q.id];
+  const isBm = !!state.bookmarks[q.id];
+  const draft = state.multiDraft[q.id] || [];
+
+  let statusBadge = "";
+  if (ansRec) {
+    statusBadge = ansRec.ok
+      ? `<span class="badge badge-ok">正解</span>`
+      : `<span class="badge badge-ng">不正解</span>`;
+  }
+
+  const optionsHtml = q.opts.map((opt, idx) => {
+    let cls = "opt-btn";
+    const disabled = !!ansRec;
+    if (ansRec) {
+      const isRightOpt = q.type === "m" ? q.ans.includes(idx) : q.ans === idx;
+      const isUserSel = q.type === "m" ? ansRec.sel.includes(idx) : ansRec.sel === idx;
+      if (isRightOpt) cls += " correct";
+      else if (isUserSel) cls += " wrong";
+    } else if (q.type === "m" && draft.includes(idx)) {
+      cls += " selected";
+    }
+    return `
+      <button type="button" class="${cls}" data-qid="${q.id}" data-oidx="${idx}" ${disabled ? "disabled" : ""}>
+        <span class="opt-key">${KEYS[idx] || (idx + 1)}</span>
+        <span>${escapeHtml(opt)}</span>
+      </button>
+    `;
+  }).join("");
+
+  let multiSubmitHtml = "";
+  if (q.type === "m" && !ansRec) {
+    multiSubmitHtml = `
+      <div class="multi-submit-row">
+        <button type="button" class="btn btn-primary btn-sm submit-multi-btn" data-qid="${q.id}" ${draft.length === 0 ? "disabled" : ""}>選択した項目で回答する</button>
+        <span style="font-size:0.8rem;color:var(--text-muted);">複数選択可（${draft.length}個選択中）</span>
+      </div>
+    `;
+  }
+
+  let expHtml = "";
+  if (ansRec) {
+    const ansLabel = q.type === "m"
+      ? q.ans.map(i => KEYS[i]).join(", ")
+      : KEYS[q.ans] + "（" + escapeHtml(q.opts[q.ans]) + "）";
+    expHtml = `
+      <div class="explanation-box ${ansRec.ok ? "ok" : "ng"}">
+        <div class="exp-title">${ansRec.ok ? "〇 正解！" : "× 不正解"} 正解：${ansLabel}</div>
+        <div>${escapeHtml(q.exp)}</div>
+      </div>
+    `;
+  }
+
+  return `
+    <article class="q-card" data-card-qid="${q.id}">
+      <div class="q-meta">
+        <div class="q-badges">
+          <span class="badge badge-id">Q${q.id}</span>
+          <span class="badge badge-cat">${escapeHtml(CATEGORIES[q.cat].name)}</span>
+          <span class="badge badge-type">${TYPE_LABELS[q.type]}</span>
+          ${statusBadge}
+        </div>
+        <button type="button" class="bookmark-btn ${isBm ? "active" : ""}" data-bm-qid="${q.id}">
+          ${isBm ? "★ ブックマーク済" : "☆ ブックマーク"}
+        </button>
+      </div>
+      <p class="q-text">${escapeHtml(q.q)}</p>
+      <div class="options-list">${optionsHtml}</div>
+      ${multiSubmitHtml}
+      ${expHtml}
+    </article>
+  `;
+}
+
+function render() {
+  const filtered = getFilteredQuestions();
+  updateSummaryStats(filtered.length);
+
+  const area = document.getElementById("quiz-area");
+  const pagArea = document.getElementById("pagination-area");
+  pagArea.innerHTML = "";
+
+  if (state.mode === "mock") {
+    renderMockMode(area);
+    return;
+  }
+
+  if (filtered.length === 0) {
+    area.innerHTML = `<div class="empty-state">条件に一致する問題がありません。フィルターや検索条件を変更してください。</div>`;
+    return;
+  }
+
+  if (state.mode === "single") {
+    if (state.currentIdx >= filtered.length) state.currentIdx = 0;
+    if (state.currentIdx < 0) state.currentIdx = 0;
+    const q = filtered[state.currentIdx];
+    area.innerHTML = renderQuestionCard(q, state.answers, false) + `
+      <div class="nav-footer">
+        <button type="button" class="btn" id="prev-q-btn" ${state.currentIdx === 0 ? "disabled" : ""}>← 前の問題</button>
+        <span style="font-size:0.85rem;color:var(--text-muted);font-weight:600;">${state.currentIdx + 1} / ${filtered.length} 問目</span>
+        <button type="button" class="btn btn-primary" id="next-q-btn" ${state.currentIdx >= filtered.length - 1 ? "disabled" : ""}>次の問題 →</button>
+      </div>
+    `;
+  } else {
+    const totalPages = Math.max(1, Math.ceil(filtered.length / state.pageSize));
+    if (state.listPage > totalPages) state.listPage = totalPages;
+    const start = (state.listPage - 1) * state.pageSize;
+    const slice = filtered.slice(start, start + state.pageSize);
+    area.innerHTML = slice.map(q => renderQuestionCard(q, state.answers, false)).join("");
+
+    if (totalPages > 1) {
+      let pagHtml = `<button type="button" class="btn btn-sm" data-page="${state.listPage - 1}" ${state.listPage === 1 ? "disabled" : ""}>前へ</button>`;
+      for (let p = 1; p <= totalPages; p++) {
+        if (p === 1 || p === totalPages || Math.abs(p - state.listPage) <= 2) {
+          pagHtml += `<button type="button" class="btn btn-sm ${p === state.listPage ? "btn-primary" : ""}" data-page="${p}">${p}</button>`;
+        } else if (Math.abs(p - state.listPage) === 3) {
+          pagHtml += `<span style="color:var(--text-muted);">...</span>`;
+        }
+      }
+      pagHtml += `<button type="button" class="btn btn-sm" data-page="${state.listPage + 1}" ${state.listPage === totalPages ? "disabled" : ""}>次へ</button>`;
+      pagArea.innerHTML = pagHtml;
+    }
+  }
+}
+
+function renderMockMode(area) {
+  const statusEl = document.getElementById("mock-status-text");
+  if (state.mockIds.length === 0) {
+    statusEl.textContent = "";
+    area.innerHTML = `<div class="empty-state">上の「模試を開始する」ボタンを押すと、ランダムに問題を出題します。</div>`;
+    return;
+  }
+  const doneCount = Object.keys(state.mockAnswers).length;
+  statusEl.textContent = `解答済み: ${doneCount} / ${state.mockIds.length} 問`;
+
+  if (state.mockFinished) {
+    const okCount = Object.values(state.mockAnswers).filter(a => a.ok).length;
+    const pct = Math.round((okCount / state.mockIds.length) * 100);
+    area.innerHTML = `
+      <div class="panel">
+        <h2 style="margin-top:0;">模試結果レポート</h2>
+        <p style="font-size:1.1rem;font-weight:700;">スコア: ${okCount} / ${state.mockIds.length} 問正解（正答率 ${pct}%）</p>
+        <button type="button" class="btn btn-primary" id="mock-review-btn">全問の解答・解説を確認する</button>
+      </div>
+    ` + state.mockIds.map(id => renderQuestionCard(BY_ID[id], state.mockAnswers, true)).join("");
+    return;
+  }
+
+  const q = BY_ID[state.mockIds[state.mockIdx]];
+  area.innerHTML = renderQuestionCard(q, state.mockAnswers, true) + `
+    <div class="nav-footer">
+      <button type="button" class="btn" id="mock-prev-btn" ${state.mockIdx === 0 ? "disabled" : ""}>← 前の問題</button>
+      <span style="font-size:0.85rem;color:var(--text-muted);font-weight:600;">模試 ${state.mockIdx + 1} / ${state.mockIds.length} 問目</span>
+      ${state.mockIdx < state.mockIds.length - 1
+        ? `<button type="button" class="btn btn-primary" id="mock-next-btn">次の問題 →</button>`
+        : `<button type="button" class="btn btn-primary" id="mock-finish-btn">採点・結果を見る</button>`
+      }
+    </div>
+  `;
+}
+
+function startMock() {
+  const count = Number(document.getElementById("mock-count").value);
+  const cat = document.getElementById("mock-cat").value;
+  let pool = cat === "all" ? [...QUESTIONS] : QUESTIONS.filter(q => String(q.cat) === cat);
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  state.mockIds = pool.slice(0, Math.min(count, pool.length)).map(q => q.id);
+  state.mockIdx = 0;
+  state.mockAnswers = {};
+  state.mockFinished = false;
+  render();
+}
+
+function handleAnswer(qid, sel) {
+  const q = BY_ID[qid];
+  const ok = isCorrectSelection(q, sel);
+  if (state.mode === "mock") {
+    state.mockAnswers[qid] = { sel, ok };
+  }
+  state.answers[qid] = { sel, ok };
+  delete state.multiDraft[qid];
+  saveState();
+  render();
+}
+
+document.addEventListener("click", (e) => {
+  const optBtn = e.target.closest(".opt-btn");
+  if (optBtn && !optBtn.disabled) {
+    const qid = Number(optBtn.dataset.qid);
+    const oidx = Number(optBtn.dataset.oidx);
+    const q = BY_ID[qid];
+    if (q.type === "m") {
+      const cur = state.multiDraft[qid] || [];
+      state.multiDraft[qid] = cur.includes(oidx) ? cur.filter(x => x !== oidx) : [...cur, oidx];
+      render();
+    } else {
+      handleAnswer(qid, oidx);
+    }
+    return;
+  }
+
+  const multiBtn = e.target.closest(".submit-multi-btn");
+  if (multiBtn) {
+    const qid = Number(multiBtn.dataset.qid);
+    const draft = state.multiDraft[qid] || [];
+    if (draft.length > 0) handleAnswer(qid, draft);
+    return;
+  }
+
+  const bmBtn = e.target.closest(".bookmark-btn");
+  if (bmBtn) {
+    const qid = Number(bmBtn.dataset.bmQid);
+    if (state.bookmarks[qid]) delete state.bookmarks[qid];
+    else state.bookmarks[qid] = true;
+    saveState();
+    render();
+    return;
+  }
+
+  const catCard = e.target.closest(".cat-bar-item");
+  if (catCard) {
+    const c = catCard.dataset.cat;
+    state.filterCat = (state.filterCat === c) ? "all" : c;
+    document.getElementById("filter-cat").value = state.filterCat;
+    state.currentIdx = 0;
+    state.listPage = 1;
+    render();
+    return;
+  }
+
+  const pagBtn = e.target.closest("[data-page]");
+  if (pagBtn && !pagBtn.disabled) {
+    state.listPage = Number(pagBtn.dataset.page);
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+
+  if (e.target.id === "prev-q-btn") { state.currentIdx--; render(); }
+  else if (e.target.id === "next-q-btn") { state.currentIdx++; render(); }
+  else if (e.target.id === "mock-prev-btn") { state.mockIdx--; render(); }
+  else if (e.target.id === "mock-next-btn") { state.mockIdx++; render(); }
+  else if (e.target.id === "mock-finish-btn") { state.mockFinished = true; render(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+  else if (e.target.id === "mock-review-btn") {
+    const first = document.querySelector(".q-card");
+    if (first) first.scrollIntoView({ behavior: "smooth" });
+  }
+});
+
+document.querySelectorAll(".mode-tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".mode-tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    state.mode = tab.dataset.mode;
+    document.getElementById("filter-controls").classList.toggle("hidden", state.mode === "mock");
+    document.getElementById("mock-controls").classList.toggle("hidden", state.mode !== "mock");
+    render();
+  });
+});
+
+document.getElementById("filter-cat").addEventListener("change", (e) => {
+  state.filterCat = e.target.value; state.currentIdx = 0; state.listPage = 1; render();
+});
+document.getElementById("filter-type").addEventListener("change", (e) => {
+  state.filterType = e.target.value; state.currentIdx = 0; state.listPage = 1; render();
+});
+document.getElementById("filter-status").addEventListener("change", (e) => {
+  state.filterStatus = e.target.value; state.currentIdx = 0; state.listPage = 1; render();
+});
+document.getElementById("filter-search").addEventListener("input", (e) => {
+  state.search = e.target.value; state.currentIdx = 0; state.listPage = 1; render();
+});
+document.getElementById("clear-cat-btn").addEventListener("click", () => {
+  state.filterCat = "all"; document.getElementById("filter-cat").value = "all"; state.currentIdx = 0; state.listPage = 1; render();
+});
+document.getElementById("toggle-stats-btn").addEventListener("click", () => {
+  document.getElementById("cat-stats-panel").classList.toggle("hidden");
+});
+document.getElementById("start-mock-btn").addEventListener("click", startMock);
+
+const modal = document.getElementById("reset-modal");
+document.getElementById("open-reset-btn").addEventListener("click", () => modal.classList.add("open"));
+document.getElementById("cancel-reset-btn").addEventListener("click", () => modal.classList.remove("open"));
+document.getElementById("confirm-reset-btn").addEventListener("click", () => {
+  state.answers = {};
+  state.bookmarks = {};
+  state.multiDraft = {};
+  state.mockAnswers = {};
+  saveState();
+  modal.classList.remove("open");
+  render();
+});
+
+document.addEventListener("keydown", (e) => {
+  if (document.activeElement && document.activeElement.tagName === "INPUT") return;
+  if (state.mode === "single") {
+    const filtered = getFilteredQuestions();
+    if (e.key === "ArrowRight" && state.currentIdx < filtered.length - 1) { state.currentIdx++; render(); }
+    else if (e.key === "ArrowLeft" && state.currentIdx > 0) { state.currentIdx--; render(); }
+  }
+});
+
+loadState();
+render();
+</script>
+</body>
+</html>
